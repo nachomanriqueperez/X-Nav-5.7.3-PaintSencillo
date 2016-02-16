@@ -93,13 +93,27 @@ function canvasApp(){
 	  begin_drawing = false;
     }
 
+	function findPos(obj) {
+    var curleft = 0, curtop = 0;
+    if (obj.offsetParent) {
+        do {
+            curleft += obj.offsetLeft;
+            curtop += obj.offsetTop;
+        } while (obj = obj.offsetParent);
+        return { x: curleft, y: curtop };
+    }
+    	return undefined;
+	}
+
     function mouse_moved(ev) {
-	  var x, y;	
+	  var x, y, mouse;	
 	  // Get the mouse position in the canvas
-	  x = ev.pageX;
-	  y = ev.pageY;
+      mouse = findPos(this);
+	  x = ev.pageX - mouse.x;
+	  y = ev.pageY - mouse.y;
 	
 	  var brush = document.getElementById('brush_chosen');
+	  
 	  if (begin_drawing) {
 	    context.beginPath();
 		console.log(global_brush);
